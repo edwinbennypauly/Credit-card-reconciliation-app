@@ -13,7 +13,7 @@ st.markdown(
     .footer {
         position: fixed;
         bottom: 10px;
-        right: 10px;
+        left: 10px;
         font-size: 12px;
         color: gray;
     }
