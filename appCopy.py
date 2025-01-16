@@ -4,16 +4,23 @@ import numpy as np
 import os
 
 # Application
-st.title("Credit Card Reconciliation Application")
-st.write("Upload your **Bank File** and **SAP File** below to perform reconciliation.")
+st.set_page_config(
+    page_title="Credit Card Reconciliation App",
+    page_icon="💳",
+    layout="wide",
+)
 
+# Custom CSS
 st.markdown(
     """
     <style>
+    .main {
+        background-color: #f4f4f4;
+    }
     .footer {
         position: fixed;
         bottom: 10px;
-        left: 10px;
+        right: 10px;
         font-size: 12px;
         color: gray;
     }
@@ -24,14 +31,24 @@ st.markdown(
     .footer a:hover {
         text-decoration: underline;
     }
+    .header-text {
+        font-size: 24px;
+        font-weight: bold;
+        color: #333333;
+        margin-bottom: 20px;
+    }
     </style>
     """,
     unsafe_allow_html=True,
 )
 
+# Application Title
+st.title("💳 Credit Card Reconciliation Application")
+st.write("Upload your **Bank File** and **SAP File** below to perform reconciliation.")
 
 
 # File uploads
+st.header("📁 Upload Files")
 bank_file = st.file_uploader("Upload Bank File (CSV)", type=["csv", "xls", "xlsx"])
 sap_file = st.file_uploader("Upload SAP File (XLSX)", type=["xlsx"])
 
@@ -44,6 +61,7 @@ if bank_file and sap_file:
         sap_file_df = pd.read_excel(sap_file)
 
         # Cleaning bank file
+        st.subheader("🔄 Processing Files")
         bank_file_df = bank_file_df.dropna(how='all', axis=1)
         bank_file_df = bank_file_df[bank_file_df['Commercial Name'] != 'Total                         ']
         bank_file_df = bank_file_df[['Main Merchant No ', ' Terminal', ' Txn Date', ' Auth Id', 
@@ -114,8 +132,9 @@ if bank_file and sap_file:
 
 
         # Offer download link
+        st.success("Reconciliation completed successfully! 📊")
         with open('Credit_Card_Reconciliation.xlsx', 'rb') as f:
-            st.download_button(label="Download Reconciliation Report",
+            st.download_button(label=" 📂 Download Reconciliation Report",
                                data=f,
                                file_name="Credit_Card_Reconciliation.xlsx",
                                mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
